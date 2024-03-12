@@ -21,9 +21,32 @@ const createCurrentUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error creating user" });
   }
 };
+const updateCurrentUser = async (req: Request, res: Response) => {
+  try {
+    //console.log("Request body:", req.body);
+    const { name, addressLine1, country, city } = req.body; // deconstructing form data
+    //console.log("name", name);
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    user.name = name;
+    user.addressLine1 = addressLine1;
+    user.city = city;
+    user.country = country;
+
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating user" });
+  }
+};
 
 const MyUserController = {
   createCurrentUser,
+  updateCurrentUser,
 };
 
 export default MyUserController;
