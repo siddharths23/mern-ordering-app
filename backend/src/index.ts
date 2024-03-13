@@ -13,6 +13,10 @@ const app = express();
 app.use(express.json()); //automatically converts the req body to json
 app.use(cors());
 
+app.get("/health", async (req: Request, res: Response) => {
+  res.send({ message: "health OK!" });
+});
+
 app.use("/api/my/user", myUserRoute);
 
 // app.get("/test", async (req: Request, res: Response) => {
